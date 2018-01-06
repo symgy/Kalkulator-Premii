@@ -1,0 +1,11 @@
+E:\C++ obiektowe\Premia\Premia\Premia\bin\Debug\Premia.exe.config
+E:\C++ obiektowe\Premia\Premia\Premia\bin\Debug\Premia.exe
+E:\C++ obiektowe\Premia\Premia\Premia\bin\Debug\Premia.pdb
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.csprojResolveAssemblyReference.cache
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.Form1.resources
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.Properties.Resources.resources
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.csproj.GenerateResource.Cache
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.csproj.CoreCompileInputs.cache
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.exe
+E:\C++ obiektowe\Premia\Premia\Premia\obj\Debug\Premia.pdb
+E:\C++ obiektowe\Premia\Premia\Premia\bin\Debug\MySql.Data.DLL
