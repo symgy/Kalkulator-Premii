@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using  MySql.Data.MySqlClient;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
 
 
 namespace Premia
 {
-    
+
     public partial class Form1 : Form
     {
         String konfiguracja = "datasource=localhost; port=3306; username=root;password=password;database=serwis";
@@ -20,32 +26,54 @@ namespace Premia
         {
             InitializeComponent();
             pokaz_siatke();
+            aktualna_data();
         }
-        
+
+
         private void oblicz()
         {
-            double suma=0;
+            double suma = 0;
             double premia = 0;
             double premia_netto = 0;
-  
-            for (int i=0; i < dgPremia.Rows.Count; i++)
+
+            for (int i = 0; i < dgPremia.Rows.Count; i++)
             {
                 suma += Convert.ToDouble(dgPremia.Rows[i].Cells[2].Value); // oblicza sume kolumny z kwotą
             }
             lblSumaNetto.Text = Convert.ToString(suma); //suma kwot
 
-            premia = suma * ((Convert.ToDouble(tbProcent.Text)/100)); // premia brutto
+            premia = suma * ((Convert.ToDouble(tbProcent.Text) / 100)); // premia brutto
+            premia = Math.Round(premia, 2);
             lblPremiaBrutto.Text = Convert.ToString(premia); //zapis do odpowiedniego pola premii brutto
 
-            
-            premia_netto= premia * 0.7;
+            premia_netto = premia * 0.7;
+            premia_netto = Math.Round(premia_netto, 2);
             lblPremiaNetto.Text = Convert.ToString(premia_netto);
         }
-        
-        private void pokaz_siatke()
+
+        private void aktualna_data()
+        {
+            System.DateTime aktualna_data = System.DateTime.Now;
+
+            if (aktualna_data.Month == 1) { miesiac = 1; cbMiesiac.SelectedIndex = 0; }
+            if (aktualna_data.Month == 2) { miesiac = 2; cbMiesiac.SelectedIndex = 1; }
+            if (aktualna_data.Month == 3) { miesiac = 3; cbMiesiac.SelectedIndex = 2; }
+            if (aktualna_data.Month == 4) { miesiac = 4; cbMiesiac.SelectedIndex = 3; }
+            if (aktualna_data.Month == 5) { miesiac = 5; cbMiesiac.SelectedIndex = 4; }
+            if (aktualna_data.Month == 6) { miesiac = 6; cbMiesiac.SelectedIndex = 5; }
+            if (aktualna_data.Month == 7) { miesiac = 7; cbMiesiac.SelectedIndex = 6; }
+            if (aktualna_data.Month == 8) { miesiac = 8; cbMiesiac.SelectedIndex = 7; }
+            if (aktualna_data.Month == 9) { miesiac = 9; cbMiesiac.SelectedIndex = 8; }
+            if (aktualna_data.Month == 10) { miesiac = 10; cbMiesiac.SelectedIndex = 9; }
+            if (aktualna_data.Month == 11) { miesiac = 11; cbMiesiac.SelectedIndex = 10; }
+            if (aktualna_data.Month == 12) { miesiac = 12; cbMiesiac.SelectedIndex = 11; }
+
+            
+        }
+            private void pokaz_siatke()
         {
             MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-            MySqlCommand pobierzDane = new MySqlCommand("SELECT * FROM premia.tabelaPremia ORDER by wpis_id;", laczBaze);
+            MySqlCommand pobierzDane = new MySqlCommand("SELECT wpis_id AS ID, numerFV AS 'Numer FV', kwota AS Kwota, opis AS Opis, data AS Data FROM premia.tabelaPremia ORDER by wpis_id;", laczBaze);
 
             try
             {
@@ -97,7 +125,7 @@ namespace Premia
             if (e.RowIndex >= 0)
             {
                 id_rekordu = Convert.ToInt32(dgPremia.Rows[e.RowIndex].Cells[0].Value);
-                tbNumerFV.Text=dgPremia.Rows[e.RowIndex].Cells[1].Value.ToString();
+                tbNumerFV.Text = dgPremia.Rows[e.RowIndex].Cells[1].Value.ToString();
                 tbKwotaFV.Text = dgPremia.Rows[e.RowIndex].Cells[2].Value.ToString();
                 tbOpis.Text = dgPremia.Rows[e.RowIndex].Cells[3].Value.ToString();
                 dpData.Text = dgPremia.Rows[e.RowIndex].Cells[4].Value.ToString();
@@ -127,7 +155,7 @@ namespace Premia
 
                 try
                 {
-                    polaczenie.CommandText = "INSERT INTO premia.tabelaPremia SET numerFV='"+tbNumerFV.Text+"', kwota='"+tbKwotaFV.Text+"', opis='"+tbOpis.Text+"', data='"+dpData.Text+"'   ;";
+                    polaczenie.CommandText = "INSERT INTO premia.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "'   ;";
                     polaczenie.ExecuteNonQuery();
                     transakcja.Commit();
                 }
@@ -137,12 +165,103 @@ namespace Premia
                 }
 
                 pokaz_siatke();
+                wyczysc_pola();
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             oblicz();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+
+                Document pdf = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
+                PdfWriter write = PdfWriter.GetInstance(pdf, new FileStream("Podsumowanie.pdf", FileMode.Create));
+                pdf.Open();
+
+                pdf.Add(new Paragraph("Podsumowanie premii wypracowanej w miesiacu: "));
+                pdf.Add(new Paragraph(" "));
+
+                PdfPTable tabela = new PdfPTable(dgPremia.Columns.Count);
+
+                //Dodawanie nagłówków tabeli
+                for (int i = 0; i < dgPremia.Columns.Count; i++)
+                {
+                    tabela.AddCell(new Phrase(dgPremia.Columns[i].HeaderText));
+                }
+
+                //Oznaczenie pierwszego wiersza jako nagłówek
+                tabela.HeaderRows = 1;
+
+                //Dodawanie wartości z komórek DGV do tabeli
+                for (int i = 0; i < dgPremia.Rows.Count; i++)
+                {
+                    for (int j = 0; j < dgPremia.Columns.Count; j++)
+                    {
+                        if (dgPremia[j, i].Value != null)
+                        {
+                            tabela.AddCell(new Phrase(dgPremia[j, i].Value.ToString()));
+                        }
+                    }
+                }
+
+                pdf.Add(tabela);
+                pdf.Add(new Paragraph("Podsumowanie:"));
+                pdf.Add(new Paragraph("Premia wynosi: " + lblPremiaBrutto.Text.ToString() + " zl brutto."));
+                pdf.Add(new Paragraph("Premia wynosi: " + lblPremiaNetto.Text.ToString() + " zl netto."));
+                pdf.Close();
+
+                MessageBox.Show("Pomyślnie utworzono plik o nazwie: Podsumowanie.pdf");
+            }
+
+            catch (Exception komunikat)
+            {
+                MessageBox.Show(komunikat.Message);
+            }
+        }
+
+        private void wyczysc_pola()
+        {
+            tbKwotaFV.Text = "";
+            tbNumerFV.Text = "";
+            tbOpis.Text = "";
+        }
+
+        private void btnUsun_Click(object sender, EventArgs e)
+        {
+            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
+            MySqlCommand usuwanie = laczBaze.CreateCommand();
+            MySqlTransaction transakcja;
+            laczBaze.Open();
+            transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
+            usuwanie.Connection = laczBaze;
+            usuwanie.Transaction = transakcja;
+
+            try
+            {
+if (MessageBox.Show("Czy na pewno chcesz usunąć dany rekord ?","UWAGA!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    usuwanie.CommandText = "DELETE FROM premia.tabelapremia WHERE wpis_id = "+id_rekordu+";";
+                    usuwanie.ExecuteNonQuery();
+
+                    transakcja.Commit();
+                    MessageBox.Show("Rekord został usunięty");
+                }
+            }
+            catch (Exception komunikat)
+            {
+                MessageBox.Show(komunikat.Message);
+                transakcja.Rollback();
+            }
+            laczBaze.Close();
+            wyczysc_pola();
+            pokaz_siatke();
+
         }
     }
 }
