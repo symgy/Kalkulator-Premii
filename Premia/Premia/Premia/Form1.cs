@@ -25,8 +25,11 @@ namespace Premia
         public Form1()
         {
             InitializeComponent();
-            pokaz_siatke();
+            
             aktualna_data();
+            wyswietl_zakres();
+            oblicz();
+
         }
 
 
@@ -68,34 +71,9 @@ namespace Premia
             if (aktualna_data.Month == 11) { miesiac = 11; cbMiesiac.SelectedIndex = 10; }
             if (aktualna_data.Month == 12) { miesiac = 12; cbMiesiac.SelectedIndex = 11; }
 
-            
+
         }
-            private void pokaz_siatke()
-        {
-            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-            MySqlCommand pobierzDane = new MySqlCommand("SELECT wpis_id AS ID, numerFV AS 'Numer FV', kwota AS Kwota, opis AS Opis, data AS Data FROM premia.tabelaPremia ORDER by wpis_id;", laczBaze);
-
-            try
-            {
-                MySqlDataAdapter wczytaj = new MySqlDataAdapter(); //interfejs miedzy bazą a danymi
-                wczytaj.SelectCommand = pobierzDane;
-                DataTable tabela = new DataTable(); // tworzymy tabele
-                wczytaj.Fill(tabela);
-
-                BindingSource zrodlo = new BindingSource();
-                zrodlo.DataSource = tabela;
-                dgPremia.DataSource = zrodlo;
-                laczBaze.Close();
-
-            }
-            catch (Exception komunikat)
-            {
-                MessageBox.Show(komunikat.Message);
-            }
-            oblicz();
-            //.Columns[0].Visible = false;
-        }
-
+        
         private void btnSzukaj_Click(object sender, EventArgs e)
         {
             MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
@@ -164,7 +142,7 @@ namespace Premia
                     MessageBox.Show(komunikat.Message);
                 }
 
-                pokaz_siatke();
+                wyswietl_zakres(); 
                 wyczysc_pola();
             }
         }
@@ -174,17 +152,16 @@ namespace Premia
             oblicz();
         }
 
+
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             try
             {
-
-
                 Document pdf = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
                 PdfWriter write = PdfWriter.GetInstance(pdf, new FileStream("Podsumowanie.pdf", FileMode.Create));
                 pdf.Open();
-
-                pdf.Add(new Paragraph("Podsumowanie premii wypracowanej w miesiacu: "));
+                pdf.Add(new Paragraph("Podsumowanie premii wypracowanej w miesiacu: " + miesiace[miesiac - 1]));
                 pdf.Add(new Paragraph(" "));
 
                 PdfPTable tabela = new PdfPTable(dgPremia.Columns.Count);
@@ -244,9 +221,9 @@ namespace Premia
 
             try
             {
-if (MessageBox.Show("Czy na pewno chcesz usunąć dany rekord ?","UWAGA!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                if (MessageBox.Show("Czy na pewno chcesz usunąć dany rekord ?", "UWAGA!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
-                    usuwanie.CommandText = "DELETE FROM premia.tabelapremia WHERE wpis_id = "+id_rekordu+";";
+                    usuwanie.CommandText = "DELETE FROM premia.tabelapremia WHERE wpis_id = " + id_rekordu + ";";
                     usuwanie.ExecuteNonQuery();
 
                     transakcja.Commit();
@@ -260,8 +237,72 @@ if (MessageBox.Show("Czy na pewno chcesz usunąć dany rekord ?","UWAGA!", Messa
             }
             laczBaze.Close();
             wyczysc_pola();
-            pokaz_siatke();
+            wyswietl_zakres();
 
+        }
+
+        private void wyswietl_zakres()
+        {
+            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
+            MySqlCommand szukanie = laczBaze.CreateCommand();
+
+            try
+            {
+                MySqlDataAdapter polaczenie = new MySqlDataAdapter();
+                if (cbMiesiac.SelectedIndex != 12) szukanie.CommandText = "SELECT * FROM premia.tabelapremia WHERE CONCAT (data) LIKE '%" + miesiace_szukaj[cbMiesiac.SelectedIndex] + "%' ORDER BY wpis_id;";
+                else szukanie.CommandText = "SELECT * FROM premia.tabelapremia ORDER BY wpis_id;";
+
+                polaczenie.SelectCommand = szukanie;
+                DataTable tabela = new DataTable();
+                polaczenie.Fill(tabela);
+
+                BindingSource zrodlo = new BindingSource();
+                zrodlo.DataSource = tabela;
+                dgPremia.DataSource = zrodlo;
+                laczBaze.Close();
+
+            }
+            catch (Exception komunikat)
+            {
+                MessageBox.Show(komunikat.Message);
+            }
+            oblicz();
+            dgPremia.Columns[0].HeaderText = "ID rekordu";
+            dgPremia.Columns[1].HeaderText = "Numer FV";
+            dgPremia.Columns[2].HeaderText = "Kwota";
+            dgPremia.Columns[3].HeaderText = "Opis";
+            dgPremia.Columns[4].HeaderText = "Data";
+        }
+
+        private void btnZatwierdz_Click(object sender, EventArgs e)
+        {
+            wyswietl_zakres();  
+        }
+
+        private void btnModyfikuj_Click(object sender, EventArgs e)
+        {
+            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
+            MySqlCommand modyfikuj = laczBaze.CreateCommand();
+            MySqlTransaction transakcja;
+            laczBaze.Open();
+            transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);  //odczyt zatwierdzonych danych
+            modyfikuj.Connection = laczBaze;
+            modyfikuj.Transaction = transakcja;
+
+            try
+            {
+                modyfikuj.CommandText = "UPDATE premia.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "' WHERE wpis_id=" + id_rekordu + " ";
+                modyfikuj.ExecuteNonQuery();
+                transakcja.Commit();
+            }
+            catch (Exception komunikat)
+            {
+                MessageBox.Show(komunikat.Message);
+            }
+            laczBaze.Close();
+            wyswietl_zakres();
+            wyczysc_pola();
+            
         }
     }
 }

@@ -5,9 +5,11 @@
         // ******************************************  deklaracja zmiennych
         int id_rekordu = 0;
         int miesiac = 1;
+        string[] miesiace = { "styczen", "luty", "marzec", "kwiecien", "maj", "czerwiec", "lipiec", "sierpien", "wrzesien", "pazdziernik", "listopad", "grudzien" };
+        string[] miesiace_szukaj = { "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "wrzesnia", "pazdziernika", "listopada", "grudnia" };
         // ******************************************  koniec deklaracji zmiennych
 
-            
+
 
 
         /// <summary>
@@ -49,7 +51,6 @@
             this.tbNumerFV = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.tbProcent = new System.Windows.Forms.TextBox();
@@ -65,10 +66,21 @@
             this.tbSzukaj = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cbMiesiac = new System.Windows.Forms.ComboBox();
+            this.btnZatwierdz = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgPremia)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -84,9 +96,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.tbNumerFV);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(10, 126);
+            this.groupBox1.Location = new System.Drawing.Point(10, 106);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(338, 269);
+            this.groupBox1.Size = new System.Drawing.Size(338, 231);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Dane ";
@@ -109,6 +121,7 @@
             this.btnModyfikuj.TabIndex = 10;
             this.btnModyfikuj.Text = "modyfikuj";
             this.btnModyfikuj.UseVisualStyleBackColor = true;
+            this.btnModyfikuj.Click += new System.EventHandler(this.btnModyfikuj_Click);
             // 
             // btnDodaj
             // 
@@ -125,7 +138,7 @@
             this.dpData.Location = new System.Drawing.Point(91, 18);
             this.dpData.Name = "dpData";
             this.dpData.Size = new System.Drawing.Size(226, 20);
-            this.dpData.TabIndex = 8;
+            this.dpData.TabIndex = 5;
             this.dpData.Value = new System.DateTime(2018, 1, 6, 15, 20, 52, 0);
             // 
             // label4
@@ -143,7 +156,7 @@
             this.tbOpis.Multiline = true;
             this.tbOpis.Name = "tbOpis";
             this.tbOpis.Size = new System.Drawing.Size(226, 79);
-            this.tbOpis.TabIndex = 6;
+            this.tbOpis.TabIndex = 8;
             // 
             // label3
             // 
@@ -159,7 +172,7 @@
             this.tbKwotaFV.Location = new System.Drawing.Point(91, 74);
             this.tbKwotaFV.Name = "tbKwotaFV";
             this.tbKwotaFV.Size = new System.Drawing.Size(226, 20);
-            this.tbKwotaFV.TabIndex = 4;
+            this.tbKwotaFV.TabIndex = 7;
             // 
             // label2
             // 
@@ -175,7 +188,7 @@
             this.tbNumerFV.Location = new System.Drawing.Point(91, 48);
             this.tbNumerFV.Name = "tbNumerFV";
             this.tbNumerFV.Size = new System.Drawing.Size(226, 20);
-            this.tbNumerFV.TabIndex = 2;
+            this.tbNumerFV.TabIndex = 6;
             // 
             // label1
             // 
@@ -199,31 +212,19 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(10, 401);
+            this.groupBox2.Location = new System.Drawing.Point(10, 343);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(337, 169);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Podsumowanie";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::Premia.Properties.Resources.pdf;
-            this.pictureBox1.Location = new System.Drawing.Point(231, 67);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.pictureBox1.TabIndex = 10;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(230, 32);
+            this.button1.Location = new System.Drawing.Point(236, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
+            this.button1.TabIndex = 13;
             this.button1.Text = "przelicz";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -244,7 +245,7 @@
             this.tbProcent.Location = new System.Drawing.Point(158, 32);
             this.tbProcent.Name = "tbProcent";
             this.tbProcent.Size = new System.Drawing.Size(30, 22);
-            this.tbProcent.TabIndex = 7;
+            this.tbProcent.TabIndex = 12;
             this.tbProcent.Text = "5";
             this.tbProcent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -252,7 +253,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label11.Location = new System.Drawing.Point(8, 35);
+            this.label11.Location = new System.Drawing.Point(9, 32);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(101, 16);
             this.label11.TabIndex = 6;
@@ -261,62 +262,62 @@
             // lblPremiaNetto
             // 
             this.lblPremiaNetto.AutoSize = true;
-            this.lblPremiaNetto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblPremiaNetto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lblPremiaNetto.ForeColor = System.Drawing.Color.Red;
-            this.lblPremiaNetto.Location = new System.Drawing.Point(165, 129);
+            this.lblPremiaNetto.Location = new System.Drawing.Point(160, 129);
             this.lblPremiaNetto.Name = "lblPremiaNetto";
-            this.lblPremiaNetto.Size = new System.Drawing.Size(20, 24);
+            this.lblPremiaNetto.Size = new System.Drawing.Size(18, 20);
             this.lblPremiaNetto.TabIndex = 5;
             this.lblPremiaNetto.Text = "0";
             // 
             // lblPremiaBrutto
             // 
             this.lblPremiaBrutto.AutoSize = true;
-            this.lblPremiaBrutto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblPremiaBrutto.Location = new System.Drawing.Point(165, 105);
+            this.lblPremiaBrutto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblPremiaBrutto.Location = new System.Drawing.Point(160, 105);
             this.lblPremiaBrutto.Name = "lblPremiaBrutto";
-            this.lblPremiaBrutto.Size = new System.Drawing.Size(20, 24);
+            this.lblPremiaBrutto.Size = new System.Drawing.Size(18, 20);
             this.lblPremiaBrutto.TabIndex = 4;
             this.lblPremiaBrutto.Text = "0";
             // 
             // lblSumaNetto
             // 
             this.lblSumaNetto.AutoSize = true;
-            this.lblSumaNetto.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblSumaNetto.Location = new System.Drawing.Point(165, 81);
+            this.lblSumaNetto.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lblSumaNetto.Location = new System.Drawing.Point(160, 81);
             this.lblSumaNetto.Name = "lblSumaNetto";
-            this.lblSumaNetto.Size = new System.Drawing.Size(20, 24);
+            this.lblSumaNetto.Size = new System.Drawing.Size(18, 20);
             this.lblSumaNetto.TabIndex = 3;
             this.lblSumaNetto.Text = "0";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(9, 129);
+            this.label7.Location = new System.Drawing.Point(4, 129);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(120, 24);
+            this.label7.Size = new System.Drawing.Size(109, 20);
             this.label7.TabIndex = 2;
             this.label7.Text = "Premia netto:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label6.Location = new System.Drawing.Point(9, 105);
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label6.Location = new System.Drawing.Point(4, 105);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(126, 24);
+            this.label6.Size = new System.Drawing.Size(115, 20);
             this.label6.TabIndex = 1;
             this.label6.Text = "Premia brutto:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label5.Location = new System.Drawing.Point(9, 81);
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label5.Location = new System.Drawing.Point(4, 81);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(110, 24);
+            this.label5.Size = new System.Drawing.Size(99, 20);
             this.label5.TabIndex = 0;
             this.label5.Text = "Suma netto:";
             // 
@@ -327,31 +328,31 @@
             this.dgPremia.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgPremia.Location = new System.Drawing.Point(355, 12);
             this.dgPremia.Name = "dgPremia";
-            this.dgPremia.Size = new System.Drawing.Size(800, 557);
+            this.dgPremia.Size = new System.Drawing.Size(800, 595);
             this.dgPremia.TabIndex = 2;
             this.dgPremia.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgPremia_CellClick);
             // 
             // btnSzukaj
             // 
-            this.btnSzukaj.Location = new System.Drawing.Point(147, 97);
+            this.btnSzukaj.Location = new System.Drawing.Point(242, 49);
             this.btnSzukaj.Name = "btnSzukaj";
             this.btnSzukaj.Size = new System.Drawing.Size(75, 23);
-            this.btnSzukaj.TabIndex = 12;
-            this.btnSzukaj.Text = "Szukaj";
+            this.btnSzukaj.TabIndex = 4;
+            this.btnSzukaj.Text = "szukaj";
             this.btnSzukaj.UseVisualStyleBackColor = true;
             this.btnSzukaj.Click += new System.EventHandler(this.btnSzukaj_Click);
             // 
             // tbSzukaj
             // 
-            this.tbSzukaj.Location = new System.Drawing.Point(11, 63);
+            this.tbSzukaj.Location = new System.Drawing.Point(108, 61);
             this.tbSzukaj.Name = "tbSzukaj";
-            this.tbSzukaj.Size = new System.Drawing.Size(337, 20);
-            this.tbSzukaj.TabIndex = 12;
+            this.tbSzukaj.Size = new System.Drawing.Size(121, 20);
+            this.tbSzukaj.TabIndex = 3;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(67, 28);
+            this.label10.Location = new System.Drawing.Point(9, 21);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(86, 13);
             this.label10.TabIndex = 13;
@@ -372,21 +373,107 @@
             "wrzesień",
             "październik",
             "listopad",
-            "grudzień"});
-            this.cbMiesiac.Location = new System.Drawing.Point(159, 25);
+            "grudzień",
+            "wszystkie wpisy"});
+            this.cbMiesiac.Location = new System.Drawing.Point(98, 18);
             this.cbMiesiac.Name = "cbMiesiac";
             this.cbMiesiac.Size = new System.Drawing.Size(121, 21);
-            this.cbMiesiac.TabIndex = 14;
+            this.cbMiesiac.TabIndex = 1;
+            // 
+            // btnZatwierdz
+            // 
+            this.btnZatwierdz.Location = new System.Drawing.Point(242, 16);
+            this.btnZatwierdz.Name = "btnZatwierdz";
+            this.btnZatwierdz.Size = new System.Drawing.Size(75, 23);
+            this.btnZatwierdz.TabIndex = 2;
+            this.btnZatwierdz.Text = "zatwierdź";
+            this.btnZatwierdz.UseVisualStyleBackColor = true;
+            this.btnZatwierdz.Click += new System.EventHandler(this.btnZatwierdz_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.btnZatwierdz);
+            this.groupBox3.Controls.Add(this.btnSzukaj);
+            this.groupBox3.Controls.Add(this.cbMiesiac);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Location = new System.Drawing.Point(10, 9);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(337, 91);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Zakres ";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 55);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(56, 13);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Wyszukaj:";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Premia.Properties.Resources._2_TRASH_BIN;
+            this.pictureBox2.Location = new System.Drawing.Point(247, 17);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(64, 66);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 17;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::Premia.Properties.Resources.pdf;
+            this.pictureBox1.Location = new System.Drawing.Point(234, 67);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.maskedTextBox1);
+            this.groupBox4.Controls.Add(this.label12);
+            this.groupBox4.Controls.Add(this.pictureBox2);
+            this.groupBox4.Location = new System.Drawing.Point(10, 518);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(337, 89);
+            this.groupBox4.TabIndex = 18;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Usuwanie bazy danych";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(8, 38);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(94, 13);
+            this.label12.TabIndex = 18;
+            this.label12.Text = "Usuń dane z roku:";
+            // 
+            // maskedTextBox1
+            // 
+            this.maskedTextBox1.Location = new System.Drawing.Point(119, 35);
+            this.maskedTextBox1.Mask = "0000";
+            this.maskedTextBox1.Name = "maskedTextBox1";
+            this.maskedTextBox1.Size = new System.Drawing.Size(42, 20);
+            this.maskedTextBox1.TabIndex = 19;
+            this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.maskedTextBox1.ValidatingType = typeof(int);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1168, 582);
-            this.Controls.Add(this.cbMiesiac);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.btnSzukaj);
+            this.ClientSize = new System.Drawing.Size(1168, 616);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.tbSzukaj);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.dgPremia);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -398,8 +485,13 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgPremia)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,6 +528,13 @@
         private System.Windows.Forms.ComboBox cbMiesiac;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnZatwierdz;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.Label label12;
     }
 }
 
