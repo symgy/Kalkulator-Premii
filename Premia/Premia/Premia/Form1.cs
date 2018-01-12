@@ -11,8 +11,7 @@ using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using  MySql.Data.MySqlClient;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+
 
 
 
@@ -21,7 +20,8 @@ namespace Premia
 
     public partial class Form1 : Form
     {
-        String konfiguracja = "datasource=localhost; port=3306; username=root;password=password;database=serwis";
+        //String konfiguracja = "datasource=localhost; port=3306; username=root;password=password;database=serwis";
+        String konfiguracja = "datasource=mn26.webd.pl; port=3306; username=symygy_test;password=Pass1234;database=symygy_test";
         public Form1()
         {
             InitializeComponent();
@@ -77,7 +77,7 @@ namespace Premia
         private void btnSzukaj_Click(object sender, EventArgs e)
         {
             MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
-            MySqlCommand wyszukiwanie = new MySqlCommand("SELECT * FROM premia.tabelapremia WHERE CONCAT (numerFV, kwota, opis,' ', data) LIKE '%" + tbSzukaj.Text + "%' ORDER BY wpis_id;", laczBaze);
+            MySqlCommand wyszukiwanie = new MySqlCommand("SELECT * FROM symygy_test.tabelaPremia WHERE CONCAT (numerFV, kwota, opis,' ', data) LIKE '%" + tbSzukaj.Text + "%' ORDER BY wpis_id;", laczBaze);
 
             try
             {
@@ -133,7 +133,7 @@ namespace Premia
 
                 try
                 {
-                    polaczenie.CommandText = "INSERT INTO premia.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "'   ;";
+                    polaczenie.CommandText = "INSERT INTO symygy_test.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "'   ;";
                     polaczenie.ExecuteNonQuery();
                     transakcja.Commit();
                 }
@@ -223,7 +223,7 @@ namespace Premia
             {
                 if (MessageBox.Show("Czy na pewno chcesz usunąć dany rekord ?", "UWAGA!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
                 {
-                    usuwanie.CommandText = "DELETE FROM premia.tabelapremia WHERE wpis_id = " + id_rekordu + ";";
+                    usuwanie.CommandText = "DELETE FROM symygy_test.tabelaPremia WHERE wpis_id = " + id_rekordu + ";";
                     usuwanie.ExecuteNonQuery();
 
                     transakcja.Commit();
@@ -249,8 +249,8 @@ namespace Premia
             try
             {
                 MySqlDataAdapter polaczenie = new MySqlDataAdapter();
-                if (cbMiesiac.SelectedIndex != 12) szukanie.CommandText = "SELECT * FROM premia.tabelapremia WHERE CONCAT (data) LIKE '%" + miesiace_szukaj[cbMiesiac.SelectedIndex] + "%' ORDER BY wpis_id;";
-                else szukanie.CommandText = "SELECT * FROM premia.tabelapremia ORDER BY wpis_id;";
+                if (cbMiesiac.SelectedIndex != 12) szukanie.CommandText = "SELECT * FROM symygy_test.tabelaPremia WHERE CONCAT (data) LIKE '%" + miesiace_szukaj[cbMiesiac.SelectedIndex] + "%' ORDER BY wpis_id;";
+                else szukanie.CommandText = "SELECT * FROM symygy_test.tabelaPremia ORDER BY wpis_id;";
 
                 polaczenie.SelectCommand = szukanie;
                 DataTable tabela = new DataTable();
@@ -291,7 +291,7 @@ namespace Premia
 
             try
             {
-                modyfikuj.CommandText = "UPDATE premia.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "' WHERE wpis_id=" + id_rekordu + " ";
+                modyfikuj.CommandText = "UPDATE symygy_test.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "' WHERE wpis_id=" + id_rekordu + " ";
                 modyfikuj.ExecuteNonQuery();
                 transakcja.Commit();
             }
