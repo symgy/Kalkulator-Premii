@@ -161,7 +161,13 @@ namespace Premia
                 Document pdf = new Document(iTextSharp.text.PageSize.LETTER, 10, 10, 42, 35);
                 PdfWriter write = PdfWriter.GetInstance(pdf, new FileStream("Podsumowanie.pdf", FileMode.Create));
                 pdf.Open();
-                pdf.Add(new Paragraph("Podsumowanie premii wypracowanej w miesiacu: " + miesiace[miesiac - 1]));
+
+                // ustawienia czcionki
+                var paragraf16 = FontFactory.GetFont(BaseFont.TIMES_BOLD, BaseFont.CP1257, true, 16);
+                var paragraf14 = FontFactory.GetFont(BaseFont.TIMES_ROMAN, BaseFont.CP1257, 14);
+
+                //Dodawanie tekstu
+                pdf.Add(new Paragraph("Podsumowanie premii wypracowanej w miesiącu: " + miesiace[miesiac - 1],paragraf16));
                 pdf.Add(new Paragraph(" "));
 
                 PdfPTable tabela = new PdfPTable(dgPremia.Columns.Count);
@@ -188,9 +194,10 @@ namespace Premia
                 }
 
                 pdf.Add(tabela);
-                pdf.Add(new Paragraph("Podsumowanie:"));
-                pdf.Add(new Paragraph("Premia wynosi: " + lblPremiaBrutto.Text.ToString() + " zl brutto."));
-                pdf.Add(new Paragraph("Premia wynosi: " + lblPremiaNetto.Text.ToString() + " zl netto."));
+                pdf.Add(new Paragraph(" "));
+                pdf.Add(new Paragraph("Podsumowanie:", paragraf16));
+                pdf.Add(new Paragraph("Premia brutto wynosi: " + lblPremiaBrutto.Text.ToString() + " zł.", paragraf14));
+                pdf.Add(new Paragraph("Premia netto wynosi: " + lblPremiaNetto.Text.ToString() + " zł.", paragraf14));
                 pdf.Close();
 
                 MessageBox.Show("Pomyślnie utworzono plik o nazwie: Podsumowanie.pdf");
@@ -303,6 +310,11 @@ namespace Premia
             wyswietl_zakres();
             wyczysc_pola();
             
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
