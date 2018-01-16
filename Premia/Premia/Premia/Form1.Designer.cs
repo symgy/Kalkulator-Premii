@@ -10,7 +10,7 @@
         // ******************************************  koniec deklaracji zmiennych
 
 
-
+            
 
         /// <summary>
         /// Wymagana zmienna projektanta.
@@ -72,7 +72,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.mtbKasowanie = new System.Windows.Forms.MaskedTextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -438,7 +438,7 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.maskedTextBox1);
+            this.groupBox4.Controls.Add(this.mtbKasowanie);
             this.groupBox4.Controls.Add(this.label12);
             this.groupBox4.Controls.Add(this.pictureBox2);
             this.groupBox4.Location = new System.Drawing.Point(10, 518);
@@ -448,15 +448,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Usuwanie bazy danych";
             // 
-            // maskedTextBox1
+            // mtbKasowanie
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(119, 35);
-            this.maskedTextBox1.Mask = "0000";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(42, 20);
-            this.maskedTextBox1.TabIndex = 19;
-            this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.maskedTextBox1.ValidatingType = typeof(int);
+            this.mtbKasowanie.Location = new System.Drawing.Point(119, 35);
+            this.mtbKasowanie.Mask = "0000";
+            this.mtbKasowanie.Name = "mtbKasowanie";
+            this.mtbKasowanie.Size = new System.Drawing.Size(42, 20);
+            this.mtbKasowanie.TabIndex = 19;
+            this.mtbKasowanie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.mtbKasowanie.ValidatingType = typeof(int);
             // 
             // label12
             // 
@@ -534,7 +534,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox mtbKasowanie;
         private System.Windows.Forms.Label label12;
     }
 }

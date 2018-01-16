@@ -29,7 +29,15 @@ Global
 		SolutionGuid = {D5F07897-89DE-47A1-BCC5-DAD3F3F4E31A}
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|Default = Debug|Default
+		Release|Any CPU = Release|Any CPU
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Default = Debug|Default
+		Release|Any CPU = Release|Any CPU
 		Release|Default = Release|Default
 	EndGlobalSection
 EndGlobal

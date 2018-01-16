@@ -15,6 +15,7 @@ using  MySql.Data.MySqlClient;
 
 
 
+
 namespace Premia
 {
 
@@ -22,6 +23,8 @@ namespace Premia
     {
         //String konfiguracja = "datasource=localhost; port=3306; username=root;password=password;database=serwis";
         String konfiguracja = "datasource=mn26.webd.pl; port=3306; username=symygy_test;password=Pass1234;database=symygy_test";
+        
+
         public Form1()
         {
             InitializeComponent();
@@ -58,6 +61,8 @@ namespace Premia
         {
             System.DateTime aktualna_data = System.DateTime.Now;
 
+            dpData.Value = DateTime.Today;
+
             if (aktualna_data.Month == 1) { miesiac = 1; cbMiesiac.SelectedIndex = 0; }
             if (aktualna_data.Month == 2) { miesiac = 2; cbMiesiac.SelectedIndex = 1; }
             if (aktualna_data.Month == 3) { miesiac = 3; cbMiesiac.SelectedIndex = 2; }
@@ -78,6 +83,7 @@ namespace Premia
         {
             MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
             MySqlCommand wyszukiwanie = new MySqlCommand("SELECT * FROM symygy_test.tabelaPremia WHERE CONCAT (numerFV, kwota, opis,' ', data) LIKE '%" + tbSzukaj.Text + "%' ORDER BY wpis_id;", laczBaze);
+           
 
             try
             {
@@ -133,6 +139,7 @@ namespace Premia
 
                 try
                 {
+                    tbKwotaFV.Text = tbKwotaFV.Text.Replace(",", ".");
                     polaczenie.CommandText = "INSERT INTO symygy_test.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "'   ;";
                     polaczenie.ExecuteNonQuery();
                     transakcja.Commit();
@@ -200,7 +207,7 @@ namespace Premia
                 pdf.Add(new Paragraph("Premia netto wynosi: " + lblPremiaNetto.Text.ToString() + " zł.", paragraf14));
                 pdf.Close();
 
-                MessageBox.Show("Pomyślnie utworzono plik o nazwie: Podsumowanie.pdf");
+                MessageBox.Show("Pomyślnie utworzono plik o nazwie: Podsumowanie.pdf. Plik znajdziesz w folderze z aplikacją.");
             }
 
             catch (Exception komunikat)
@@ -273,12 +280,21 @@ namespace Premia
             {
                 MessageBox.Show(komunikat.Message);
             }
+
+            for (int licznik = 1; licznik <= (dgPremia.Rows.Count); licznik++)
+            {
+                dgPremia.Rows[licznik-1].Cells[5].Value = licznik; //stworzyc nowa kolumne
+                
+            }
+
             oblicz();
-            dgPremia.Columns[0].HeaderText = "ID rekordu";
+            dgPremia.Columns[0].Visible = false;
+            dgPremia.Columns["numer"].DisplayIndex = 0;
             dgPremia.Columns[1].HeaderText = "Numer FV";
             dgPremia.Columns[2].HeaderText = "Kwota";
             dgPremia.Columns[3].HeaderText = "Opis";
             dgPremia.Columns[4].HeaderText = "Data";
+            dgPremia.Columns[5].HeaderText = "Numer rekordu";
         }
 
         private void btnZatwierdz_Click(object sender, EventArgs e)
@@ -298,6 +314,7 @@ namespace Premia
 
             try
             {
+                tbKwotaFV.Text = tbKwotaFV.Text.Replace(",", ".");
                 modyfikuj.CommandText = "UPDATE symygy_test.tabelaPremia SET numerFV='" + tbNumerFV.Text + "', kwota='" + tbKwotaFV.Text + "', opis='" + tbOpis.Text + "', data='" + dpData.Text + "' WHERE wpis_id=" + id_rekordu + " ";
                 modyfikuj.ExecuteNonQuery();
                 transakcja.Commit();
@@ -315,6 +332,35 @@ namespace Premia
         private void pictureBox2_Click(object sender, EventArgs e)
         {
 
+            MySqlConnection laczBaze = new MySqlConnection(konfiguracja);
+            MySqlCommand usuwanie = laczBaze.CreateCommand();
+            MySqlTransaction transakcja;
+            laczBaze.Open();
+            transakcja = laczBaze.BeginTransaction(IsolationLevel.ReadCommitted);
+            usuwanie.Connection = laczBaze;
+            usuwanie.Transaction = transakcja;
+
+            try
+            {
+                if (MessageBox.Show("Czy na pewno chcesz usunąć wszystkie dane z roku: "+mtbKasowanie.Text+" ? ", "UWAGA!", MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
+                {
+                    usuwanie.CommandText = "DELETE FROM symygy_test.tabelaPremia WHERE data LIKE '%" + mtbKasowanie.Text + "%';";
+                    usuwanie.ExecuteNonQuery();
+
+                    transakcja.Commit();
+                    MessageBox.Show("Wszystkie dane z roku: " + mtbKasowanie.Text + " zostały skasowane.");
+                }
+            }
+            catch (Exception komunikat)
+            {
+                MessageBox.Show(komunikat.Message);
+                transakcja.Rollback();
+            }
+            laczBaze.Close();
+            wyczysc_pola();
+            wyswietl_zakres();
         }
+
+        
     }
 }
